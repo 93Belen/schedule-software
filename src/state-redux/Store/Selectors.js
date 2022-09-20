@@ -1,0 +1,15 @@
+export const selectWorkers = state => state.workers;
+export const selectWorkersWithSetSchedule = state => state.workers.filter(worker => worker.setSchedule !== null);
+export const selectWorkersWithHoursLeft = state => state.workers.filter(worker => worker.hoursLeft >= 8);
+export const selectWeekSchedule = state => state.weekSchedule;
+export const selectMondaySchedule = state => state.weekSchedule.monday;
+export const selectTuesdaySchedule = state => state.weekSchedule.tuesday;
+export const selectWednesdaySchedule = state => state.weekSchedule.wednesday;
+export const selectThursdaySchedule = state => state.weekSchedule.thursday;
+export const selectFridaySchedule = state => state.weekSchedule.friday;
+export const selectSaturdaySchedule = state => state.weekSchedule.saturday;
+export const selectSundaySchedule = state => state.weekSchedule.sunday;
+export const selectClickedElement = state => state.clickedElement;
+export const selectBudgetLeft = state => state.data.budgetLeft;
+export const selectData = state => state.data;
+export const selectDataDepartments = state => state.data.departments;
