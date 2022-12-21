@@ -16,12 +16,16 @@ export const DeleteShift = () => {
     // Get all workers
     let workers = useSelector(selectWorkers);
 
+    // Get hours worked
+    let startAndFinish = clickedELement[2].split('/');
+    let hoursWorked = Number(startAndFinish[1]) - Number(startAndFinish[0]);
+    console.log(-Math.abs(hoursWorked));
     // Event: delete shift
     const deleteOnClick = () => {
         // Add hours to workers hours left
         dispatch({type: 'workers/editHoursLeft', payload: {
             name: name,
-            newInfo: -8
+            newInfo: -Math.abs(hoursWorked)
         }});
         // Remove shift from week schedule slice
         dispatch({type: 'weekSchedule/removeExtraShift', payload: {
@@ -32,7 +36,7 @@ export const DeleteShift = () => {
         // Get worker's profile
         let workerObj = workers.filter(item => item.name === name);
         // Add workers pay per hour to budget left
-        dispatch({type: 'data/editAddBudgetLeft', payload: workerObj[0].payPerHour})
+        dispatch({type: 'data/editAddBudgetLeft', payload: workerObj[0].payPerHour * hoursWorked})
 
         // Once done, Go back to schedule
         navigate('/schedule', {replace: true});

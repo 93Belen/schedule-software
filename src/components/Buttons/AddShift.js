@@ -79,6 +79,23 @@ export const AddShift = () => {
             // Get input
             let time = input.value;
             let worker = inputWorker.value;
+
+            // Form validation
+            // Field required
+            if(!time){
+                return window.alert('Plase, add the shift');
+            }
+            // Format required
+            let hours = time.split('/');
+            if(hours.length !== 2 || !/^[0-9]+$/.test(hours[0]) || !/^[0-9]+$/.test(hours[0])){
+                return window.alert('Plase, add shift with required format: start/finish');
+            }
+            // Finish time is later than start time. In 24 hours format
+            if(Number(hours[0]) > Number(hours[1])){
+                return window.alert('Plase, add shift in 24 hours format');
+            }
+
+
             // Change styles to original
             buttonClicked.style.background = colors.orange;
             buttonClicked.style.color = colors.white;
@@ -89,10 +106,14 @@ export const AddShift = () => {
             buttonClicked.nextSibling.nextSibling.remove();
             buttonClicked.nextSibling.remove();
 
+            // Get hours worked
+            let startAndFinish = time.split('/');
+            let hoursWorked = Number(startAndFinish[1]) - Number(startAndFinish[0]);
+
             // Substract shift from worker
             dispatch({type: 'workers/editHoursLeft', payload: {
                 name: worker,
-                newInfo: 8
+                newInfo: hoursWorked
             }});
 
             // Get day and department where extra shift was added
@@ -110,7 +131,7 @@ export const AddShift = () => {
             // Get worker profile
             let workerObj = allWorkers.filter(item => item.name === worker);
             // Substract workers pay per hour from weekly budget
-            dispatch({type: 'data/editBudgetLeft', payload: workerObj[0].payPerHour})
+            dispatch({type: 'data/editBudgetLeft', payload: workerObj[0].payPerHour * hoursWorked})
         })
         
     }

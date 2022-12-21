@@ -10,15 +10,15 @@ export const AddProfile = () => {
             <div></div>
             <ExitButtonProfiles />
             <h3 style={addTMh3}>Name</h3>
-            <input id='nameInput' type='text' required style={addTMInput} placeholder='Name'></input>
+            <input id='nameInput' type='text' required style={addTMInput} placeholder='Name *'></input>
             <h3 style={addTMh3}>Departments</h3>
-            <input id='departmentsInput' type='text' required style={addTMInput}  placeholder='Ex: Department 1, Department 2'></input>
+            <input id='departmentsInput' type='text' required style={addTMInput}  placeholder='Ex: Department 1, Department 2 *'></input>
             <h3 style={addTMh3}>Set Schedule</h3>
             <input id='setScheduleInput' type='text' style={addTMInput}  placeholder='Day:start/finish, Day:start/finish'></input>
             <h3 style={addTMh3}>Pay Per Hour</h3>
-            <input id='payPerHourInput' type='number' required style={addTMInput} ></input>
+            <input id='payPerHourInput' type='number' placeholder='*' required style={addTMInput} ></input>
             <h3 style={addTMh3}>Hours Per Week</h3>
-            <input id='hoursPerWeekInput' type='number' required style={addTMInput} ></input>
+            <input id='hoursPerWeekInput' type='number' placeholder='*' required style={addTMInput} ></input>
             <AddProfileButton />
         </div>
     )

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Profile } from "./Profile";
 import { profilesStyle } from "./ProfilesStyle";
 import { Data } from '../Data/Data'

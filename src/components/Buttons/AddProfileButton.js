@@ -1,12 +1,15 @@
-import React from "react";
-import { useDispatch } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { addTMButtonFormStyle } from "./ButtonsStyles";
 import { useNavigate } from "react-router";
+import { selectDataDepartments } from "../../state-redux/Store/Selectors";
 
 // Submit-Team-Member Button in Add-Team-Member-Form
 export const AddProfileButton = () => {
     let dispatch = useDispatch();
     let navigate = useNavigate();
+    let dataDepartments = useSelector(selectDataDepartments);
+    
     // When click: add Team Member to Profiles
     const addProfile = (e) => {
         e.preventDefault();
@@ -17,6 +20,32 @@ export const AddProfileButton = () => {
         let payPerHour = document.getElementById('payPerHourInput').value;
         let hoursPerWeek = document.getElementById('hoursPerWeekInput').value;
         let setScheduleObj = {};
+
+        
+        // Form validation
+        if(!name || !departments || !payPerHour || !hoursPerWeek){
+            return window.alert('Plase fill up all the required fields');
+        }
+        // Check all inputs have correct format and data type
+        let hasNumbers = /\d/;
+
+        // If name contains numbers
+        if(hasNumbers.test(name)){
+            return window.alert('Plase, add a name that does not contain numbers');
+        }
+        
+        // Check that all departments in worker's profile are existing departments
+        // Count how many departments are invalid
+        let invalidDepartments = [];
+        // Loop throw worker's departments
+        for(const department of departments){
+            if(!dataDepartments.includes(department)){
+                invalidDepartments.push(department);
+            }
+        }
+        if(invalidDepartments.length > 0){
+            return window.alert(`${invalidDepartments[0]} is not a department`)
+        }
 
         // Loop throw days in Set Schedule
         for(const dayTime of setSchedule){
@@ -50,10 +79,13 @@ export const AddProfileButton = () => {
                 }})
                 }
         }
+
+
+
         // Once profile is added, go back to Profiles
         navigate('/profiles', {replace: true});
     }
-    return <button onClick={(e) => {
+    return <button type="submit" onClick={(e) => {
         addProfile(e)
     }} style={addTMButtonFormStyle}>Add To The Team!</button>
 }

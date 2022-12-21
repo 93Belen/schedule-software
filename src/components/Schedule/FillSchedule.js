@@ -20,34 +20,43 @@ export const FillSchedule = (weekSchedule, workersSelect) => {
                 }
                 // If shift is not covered
                 else if(weekSchedule[day][department][shift] === null) {
-                    // Get worker that is not working today, and can work department and shift
-                    let worker = getWorker(hasWorkedToday, workersSelect, shift, department);
-                    // Add to people already working
-                    hasWorkedToday.push(worker.name);
-                    
-                    // Substract hours from worker's hours left
-                    dispatch({type: 'workers/editHoursLeft', payload: {
-                            name: worker.name,
-                            newInfo: 8
-                        }});
-                        // Get finish time of shift
+                    try{
+                        // Get worker that is not working today, and can work department and shift
+                        let worker = getWorker(hasWorkedToday, workersSelect, shift, department);
+                        // Add to people already working
+                        hasWorkedToday.push(worker.name);
+
+                        // Get hours worked
                         let startAndFinishTimeArr = shift.split('/');
-                        let finishTime = startAndFinishTimeArr[1];
-                        // Update workers finish time of shift
-                        dispatch({type: 'workers/editLastShiftFinishAt', payload: {
-                            name: worker.name,
-                            newInfo: finishTime
-                        }})
-                        // Update budget left
-                        dispatch({type: 'data/editBudgetLeft', payload: worker.payPerHour})
+                        let hoursWorked = Number(startAndFinishTimeArr[1]) - Number(startAndFinishTimeArr[0]);
                         
-                        // Add worker to week schedule
-                         dispatch({type: 'weekSchedule/addWorker', payload:{
-                        name: worker.name,
-                        day: day,
-                        department: department,
-                        shift: shift
-                    }})
+                        // Substract hours from worker's hours left
+                        dispatch({type: 'workers/editHoursLeft', payload: {
+                                name: worker.name,
+                                newInfo: hoursWorked
+                            }});
+                            // Get finish time of shift
+                            let finishTime = startAndFinishTimeArr[1];
+                            // Update workers finish time of shift
+                            dispatch({type: 'workers/editLastShiftFinishAt', payload: {
+                                name: worker.name,
+                                newInfo: finishTime
+                            }})
+                            // Update budget left
+                            dispatch({type: 'data/editBudgetLeft', payload: worker.payPerHour * hoursWorked})
+                            
+                            // Add worker to week schedule
+                            dispatch({type: 'weekSchedule/addWorker', payload:{
+                            name: worker.name,
+                            day: day,
+                            department: department,
+                            shift: shift
+                        }})
+                    }
+                    catch(e){
+                        console.log(e);
+                        window.alert('Something went wrong. Check the console.');
+                    }
                 }
             }
         }

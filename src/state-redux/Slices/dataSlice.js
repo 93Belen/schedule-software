@@ -9,10 +9,10 @@ const options = {
             state = action.payload
         },
         editBudgetLeft: (state, action) => {
-            state.budgetLeft = state.budgetLeft - action.payload * 8;
+            state.budgetLeft = state.budgetLeft - action.payload;
         },
         editAddBudgetLeft: (state, action) => {
-            state.budgetLeft = state.budgetLeft + action.payload * 8;
+            state.budgetLeft = state.budgetLeft + action.payload;
         },
         editWeekBudget: (state, action) => {
             state.weekBudget = action.payload
